@@ -4,6 +4,7 @@ export default function DesenhoProduto({
   cor = "#d4d9cc",
   grande = false,
 }) {
+  if (["dolphin","sandero","corolla","hilux","haval","song","fusca","mustang"].includes(tipo)) return <img src={"/imagens/"+tipo+".png"} alt={{dolphin:"BYD Dolphin Mini",sandero:"Renault Sandero R.S.",corolla:"Toyota Corolla",hilux:"Toyota Hilux",haval:"Haval H6",song:"BYD Song Plus",fusca:"Volkswagen Fusca",mustang:"Ford Mustang Mach 1"}[tipo]} style={{width:"100%",height:"100%",objectFit:"contain"}} />;
   const escuro = "#263e39";
   return (
     <svg
@@ -159,3 +160,6 @@ export default function DesenhoProduto({
     </svg>
   );
 }
+
+
+

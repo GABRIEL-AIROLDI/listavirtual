@@ -971,3 +971,38 @@ dialog::backdrop {
     break-inside: avoid;
   }
 }
+:root{--verde:#a51319;--lima:#ffccd0;--borda:#444;color:#f6f6f6;background:#141416}
+.cabecalho,.convite,footer{background:#202024;color:#fff}
+.faixa,.botao.principal{background:#c81822;color:#fff}
+.abertura-visual{background:#242428}
+.cartao-produto,.ferramentas input,dialog{background:#252529;color:#fff}
+.produto-info,.nome-produto,.categorias button{color:inherit}
+.modo{background:#252529;color:#eee}
+/* Identidade UPD e enquadramento consistente */
+.cabecalho{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.cabecalho .marca{display:flex;align-items:center;gap:18px;flex-shrink:0}
+.logo-upd{display:block;width:150px;height:100px;object-fit:contain;background:#fff;border-radius:12px;padding:4px;box-shadow:0 8px 24px #0003}
+.cabecalho nav{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.grade-produtos{align-items:stretch}
+.cartao-produto{display:flex;flex-direction:column;overflow:hidden}
+.imagem-produto{width:100%;height:auto;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#fff!important}
+.imagem-produto img{display:block;object-fit:contain!important;transition:transform .35s ease}
+.imagem-produto:hover img,.imagem-produto:focus-visible img{transform:scale(1.055)}
+.produto-info{display:flex;flex-direction:column;flex:1}
+.preco-linha{margin-top:auto;gap:12px}
+.abertura-visual{overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.abertura-visual>img{display:block;width:100%;max-height:400px;object-fit:contain;transition:transform .4s}
+.abertura-visual:hover>img{transform:scale(1.025)}
+.detalhe-imagem{height:280px;display:flex;align-items:center;justify-content:center;background:#fff!important;overflow:hidden;border-radius:12px}
+.miniatura{width:100px;height:75px;flex-shrink:0;background:white;border-radius:8px;overflow:hidden}
+.item-dados{min-width:0}.item-dados strong{overflow-wrap:anywhere}
+@media(max-width:700px){.cabecalho{flex-direction:column;align-items:stretch}.cabecalho .marca{justify-content:center}.cabecalho nav{justify-content:center;gap:16px}.logo-upd{width:130px;height:88px}.detalhe-imagem{height:220px}.preco-linha{flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){.imagem-produto img,.abertura-visual>img{transition:none}.imagem-produto:hover img,.abertura-visual:hover>img{transform:none}}
+.item-titulo{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.excluir-veiculo{background:transparent;border:1px solid #777;color:inherit;border-radius:50%;width:32px;height:32px;font-size:22px;line-height:1;flex-shrink:0;cursor:pointer}
+.excluir-veiculo:hover{background:#a51319;color:#fff;border-color:#a51319}
+.categorias .filtro-veiculos,.categorias .filtro-veiculos[aria-pressed="true"]{background:#c81822;color:#fff;border:1px solid #c81822;font-weight:700}
+.categorias .filtro-veiculos:hover{background:#a51319;color:#fff}
+.categorias .filtro-antigos{display:flex;align-items:center;gap:10px;padding:10px 14px;color:#fff;cursor:pointer}
+.filtro-antigos input{width:18px;height:18px;accent-color:#c81822}
+.categorias{display:flex;align-items:center;gap:12px;flex-wrap:wrap}

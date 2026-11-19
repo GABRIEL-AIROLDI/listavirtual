@@ -10,11 +10,11 @@ export default function Vitrine({
   aoDetalhar,
 }) {
   const [busca, definirBusca] = useState("");
-  const [categoria, definirCategoria] = useState("Todos");
-  const categorias = ["Todos", "Áudio", "Periféricos", "Mesa"];
+  const [somenteAntigos, definirSomenteAntigos] = useState(false);
+
   const visiveis = produtos.filter(
     (produto) =>
-      (categoria === "Todos" || produto.categoria === categoria) &&
+      (!somenteAntigos || produto.categoria === "Carros antigos") &&
       produto.nome
         .toLocaleLowerCase("pt-BR")
         .includes(busca.toLocaleLowerCase("pt-BR")),
@@ -27,55 +27,55 @@ export default function Vitrine({
             <span /> CURADORIA PARA O DIA A DIA
           </p>
           <h1>
-            Seu espaço.
+            Seu próximo carro.
             <br />
             Sua próxima
             <br />
-            <em>boa ideia.</em>
+            <em>conquista.</em>
           </h1>
           <p>
-            Tecnologia que acompanha o seu ritmo.
+            Veículos para acompanhar sua história.
             <br />
-            Encontre o que falta na sua mesa.
+            Conheça nossos modelos.
           </p>
           <a href="#catalogo" className="botao principal">
             Explorar a coleção <span>↗</span>
           </a>
           <div className="nota-abertura">
-            PROJETO DIDÁTICO{" "}
-            <span>Produtos fictícios. Nenhuma cobrança real.</span>
+            UPD AUTOMÓVEIS{" "}
+            <span>Encontre o carro que combina com você.</span>
           </div>
         </div>
         <div className="abertura-visual">
           <div className="orbita-decorativa" />
-          <span className="rotulo-visual">ESSENCIAIS ÓRBITA / 01</span>
-          <DesenhoProduto tipo="fone" cor="#dce0ce" grande />
+          <span className="rotulo-visual">UPD / VEÍCULOS</span>
+          <img src="/imagens/dolphin.png" alt="BYD Dolphin Mini" style={{width:"100%"}} />
           <div className="destaque-produto">
             <div>
               <small>DESTAQUE DA COLEÇÃO</small>
-              <strong>Fone Aurora</strong>
-              <span>Som para acompanhar suas ideias.</span>
+              <strong>BYD Dolphin Mini</strong>
+              <span>2026 • Preço a confirmar.</span>
             </div>
-            <button aria-label="Ver Fone Aurora" onClick={() => aoDetalhar(1)}>
+            <button aria-label="Ver BYD Dolphin Mini" disabled={!produtos.some(p => p.desenho === "dolphin")} onClick={() => aoDetalhar(produtos.find(p => p.desenho === "dolphin")?.id)}>
               ↗
             </button>
           </div>
           <span className="selo">
-            Menos ruído.
+            Novos caminhos.
             <br />
-            Mais foco.
+            Novas histórias.
           </span>
         </div>
       </section>
       <div className="beneficios">
         <p>
-          <b>01</b> Design para o cotidiano
+          <b>01</b> Estilo em cada detalhe
         </p>
         <p>
-          <b>02</b> Compra em poucos passos
+          <b>02</b> Suas escolhas na sacola
         </p>
         <p>
-          <b>03</b> Pagamento simulado
+          <b>03</b> Veículos selecionados
         </p>
       </div>
       <section id="catalogo" className="catalogo">
@@ -87,17 +87,7 @@ export default function Vitrine({
           <span>{visiveis.length} produtos</span>
         </div>
         <div className="ferramentas">
-          <div className="categorias" aria-label="Filtrar por categoria">
-            {categorias.map((item) => (
-              <button
-                key={item}
-                aria-pressed={categoria === item}
-                onClick={() => definirCategoria(item)}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
+          <div className="categorias" aria-label="Filtrar veículos"><button className="filtro-veiculos" aria-pressed={!somenteAntigos} onClick={() => definirSomenteAntigos(false)}>Veículos</button><label className="filtro-antigos"><input type="checkbox" checked={somenteAntigos} onChange={evento => definirSomenteAntigos(evento.target.checked)} /> Carros antigos</label></div>
           <label className="busca">
             <span>Buscar</span>
             <input
@@ -139,3 +129,7 @@ export default function Vitrine({
     </>
   );
 }
+
+
+
+

@@ -13,7 +13,8 @@ export default function Aplicacao() {
   const [produtos, definirProdutos] = useState([]);
   const [carregando, definirCarregando] = useState(true);
   const [erro, definirErro] = useState("");
-  const [itens, definirItens] = useState([]);
+  const [itens, definirItens] = useState(() => { try { const salvos = JSON.parse(localStorage.getItem("upd-sacola") || "[]"); return Array.isArray(salvos) ? salvos.filter(i => i?.produto?.id && Number.isInteger(i.quantidade) && i.quantidade > 0) : []; } catch { return []; } });
+  useEffect(() => { try { localStorage.setItem("upd-sacola", JSON.stringify(itens)); } catch {} }, [itens]);
   const [tela, definirTela] = useState(null);
   const [produto, definirProduto] = useState(null);
   const [mensagem, definirMensagem] = useState("");
@@ -25,7 +26,7 @@ export default function Aplicacao() {
     definirCarregando(true);
     definirErro("");
     listarProdutos(controle.signal)
-      .then(definirProdutos)
+      .then(dados => { const veiculos = dados.filter(p => ["dolphin", "sandero", "corolla", "hilux", "haval", "song", "fusca", "mustang"].includes(p.desenho)); definirProdutos(veiculos); definirItens(anteriores => anteriores.map(item => ({...item, produto: veiculos.find(p => p.id === item.produto.id) ?? item.produto}))); })
       .catch((falha) => {
         if (falha.name !== "AbortError") definirErro(falha.message);
       })
@@ -80,13 +81,7 @@ export default function Aplicacao() {
         aoAbrirCarrinho={() => definirTela("carrinho")}
       />
       <main id="conteudo">
-        <div className="modo">
-          CONSUMO DIRETO DA API PHP
-          <span>
-            Dados consultados nos endpoints PHP. Pedidos enviados à API.
-            Pagamento sempre simulado.
-          </span>
-        </div>
+        
         <Vitrine
           produtos={produtos}
           carregando={carregando}
@@ -101,24 +96,24 @@ export default function Aplicacao() {
             <h2>
               Gostou da loja?
               <br />
-              Agora construa a sua.
+              Encontre seu próximo carro.
             </h2>
           </div>
-          <a className="botao principal" href="/material.html">
-            Abrir o passo a passo ↗
+          <a className="botao principal" href="#catalogo">
+            Ver veículos ↗
           </a>
         </section>
       </main>
       <footer>
         <a className="marca" href="/">
-          ◉ órbita
+          UPD Automóveis
         </a>
         <p>
-          Loja escola • React, PHP OOP e MySQL
+          UPD Automóveis
           <br />
-          Produtos e valores fictícios para fins de aprendizagem.
+          Seu próximo carro começa aqui.
         </p>
-        <a href="/apresentacao.html">Apresentação do projeto ↗</a>
+        <a href="#catalogo">Apresentação do projeto ↗</a>
       </footer>
       <div className="mensagem" role="status">
         {mensagem && (
@@ -171,3 +166,9 @@ export default function Aplicacao() {
     </>
   );
 }
+
+
+
+
+
+

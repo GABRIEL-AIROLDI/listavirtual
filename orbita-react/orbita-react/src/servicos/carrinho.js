@@ -1,3 +1,4 @@
+export const limiteSacola = (produto) => ["dolphin","sandero","corolla","hilux","haval","song","fusca","mustang"].includes(produto.desenho) ? 1 : Number(produto.estoque);
 export const formatarMoeda = (centavos) =>
   new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(
     centavos / 100,
@@ -9,8 +10,8 @@ export const calcularTotal = (itens) =>
   );
 export function adicionarItem(itens, produto) {
   const atual = itens.find((item) => item.produto.id === produto.id);
-  if ((atual?.quantidade ?? 0) >= produto.estoque)
-    throw new Error("Quantidade acima do estoque disponível.");
+  if ((atual?.quantidade ?? 0) >= limiteSacola(produto))
+    throw new Error("Este item já atingiu o limite da sacola.");
   return atual
     ? itens.map((item) =>
         item.produto.id === produto.id
@@ -26,8 +27,11 @@ export function alterarQuantidade(itens, identificador, quantidade) {
     return itens.filter((item) => item.produto.id !== identificador);
   return itens.map((item) => {
     if (item.produto.id !== identificador) return item;
-    if (quantidade > item.produto.estoque)
-      throw new Error("Quantidade acima do estoque disponível.");
+    if (quantidade > limiteSacola(item.produto))
+      throw new Error("Este item já atingiu o limite da sacola.");
     return { ...item, quantidade };
   });
 }
+
+
+

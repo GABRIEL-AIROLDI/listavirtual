@@ -12,7 +12,7 @@ export default function CartaoProduto({ produto, aoAdicionar, aoDetalhar }) {
       >
         <DesenhoProduto tipo={produto.desenho} cor={produto.cor} />
         <span className="etiqueta">
-          {produto.estoque === 0 ? "Sem estoque" : produto.categoria}
+          {produto.estoque === 0 ? "Disponibilidade a confirmar" : produto.categoria}
         </span>
         <span className="seta-detalhe">↗</span>
       </button>
@@ -21,13 +21,13 @@ export default function CartaoProduto({ produto, aoAdicionar, aoDetalhar }) {
           {produto.nome}
         </button>
         <p>
-          {produto.categoria} <span>• {produto.estoque} disponíveis</span>
+          {produto.categoria} <span>• {["dolphin","sandero","corolla","hilux","haval","song","fusca","mustang"].includes(produto.desenho) ? "Ano " + (produto.ano ?? "a confirmar") + " • Disponibilidade a confirmar" : produto.estoque + " disponíveis"}</span>
         </p>
         <div className="preco-linha">
-          <strong>{formatarMoeda(produto.preco_centavos)}</strong>
+          <strong>{["dolphin","sandero","corolla","hilux","haval","song","fusca","mustang"].includes(produto.desenho) && Number(produto.preco_centavos) === 0 ? "Preço a confirmar" : formatarMoeda(produto.preco_centavos)}</strong>
           <button
             className="adicionar"
-            disabled={!produto.estoque}
+            disabled={!produto.estoque && !["dolphin","sandero","corolla","hilux","haval","song","fusca","mustang"].includes(produto.desenho)}
             onClick={() => aoAdicionar(produto)}
             aria-label={`Adicionar ${produto.nome} à sacola`}
           >
@@ -38,3 +38,7 @@ export default function CartaoProduto({ produto, aoAdicionar, aoDetalhar }) {
     </article>
   );
 }
+
+
+
+

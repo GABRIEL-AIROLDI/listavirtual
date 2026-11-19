@@ -20,10 +20,10 @@ export default function DetalheProduto({ produto, aoAdicionar, aoFechar }) {
       <p className="sobretitulo">{produto.categoria}</p>
       <h2 id="titulo-dialogo">{produto.nome}</h2>
       <p>{produto.descricao}</p>
-      <p>{produto.estoque} unidades disponíveis</p>
-      <p className="total">{formatarMoeda(produto.preco_centavos)}</p>
+      <p>{["dolphin","sandero","corolla","hilux","haval","song","fusca","mustang"].includes(produto.desenho) ? "Disponibilidade a confirmar" : produto.estoque + " unidades disponíveis"}</p>
+      <p className="total">{["dolphin","sandero","corolla","hilux","haval","song","fusca","mustang"].includes(produto.desenho) && Number(produto.preco_centavos) === 0 ? "Preço a confirmar" : formatarMoeda(produto.preco_centavos)}</p>
       <button
-        disabled={!produto.estoque}
+        disabled={!produto.estoque && !["dolphin","sandero","corolla","hilux","haval","song","fusca","mustang"].includes(produto.desenho)}
         className="botao principal largura"
         onClick={() => {
           aoAdicionar(produto);
@@ -35,3 +35,8 @@ export default function DetalheProduto({ produto, aoAdicionar, aoFechar }) {
     </>
   );
 }
+
+
+
+
+

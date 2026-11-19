@@ -13,7 +13,7 @@ export default function Carrinho({ itens, aoAlterar, aoAvancar, aoFechar }) {
         <div className="estado">
           <p>Sua sacola ainda está vazia.</p>
           <button className="botao principal" onClick={aoFechar}>
-            Explorar produtos
+            Explorar veículos
           </button>
         </div>
       ) : (
@@ -25,52 +25,29 @@ export default function Carrinho({ itens, aoAlterar, aoAvancar, aoFechar }) {
                   <DesenhoProduto tipo={produto.desenho} cor={produto.cor} />
                 </div>
                 <div className="item-dados">
-                  <strong>{produto.nome}</strong>
-                  <span>{formatarMoeda(produto.preco_centavos)}</span>
-                  <div className="quantidade">
-                    <button
-                      onClick={() => aoAlterar(produto.id, quantidade - 1)}
-                      aria-label={`Diminuir ${produto.nome}`}
-                    >
-                      −
-                    </button>
-                    <span aria-label={`Quantidade ${quantidade}`}>
-                      {quantidade}
-                    </span>
-                    <button
-                      disabled={quantidade >= produto.estoque}
-                      onClick={() => aoAlterar(produto.id, quantidade + 1)}
-                      aria-label={`Aumentar ${produto.nome}`}
-                    >
-                      +
-                    </button>
-                    <button
-                      className="remover"
-                      onClick={() => aoAlterar(produto.id, 0)}
-                    >
-                      Remover
-                    </button>
-                  </div>
+                  <div className="item-titulo"><strong>{produto.nome}</strong><button className="excluir-veiculo" onClick={() => aoAlterar(produto.id, 0)} aria-label={"Retirar " + produto.nome + " da sacola"} title="Retirar da sacola">×</button></div><span>Ano {produto.ano ?? "a confirmar"}</span>
+                  <span>{Number(produto.preco_centavos) > 0 ? formatarMoeda(produto.preco_centavos) : "Preço a confirmar"}</span>
+                  
                 </div>
               </li>
             ))}
           </ul>
           <div className="resumo">
-            <p>
-              Frete demonstrativo <strong>Grátis</strong>
-            </p>
+            
             <p className="total">
-              Total <strong>{formatarMoeda(calcularTotal(itens))}</strong>
+              Total <strong>{itens.some(i => Number(i.produto.preco_centavos) <= 0) ? "A confirmar" : formatarMoeda(calcularTotal(itens))}</strong>
             </p>
           </div>
           <p className="texto-apoio">
-            Nenhuma cobrança será realizada nesta loja escola.
+            Os veículos selecionados ficam salvos nesta sacola. Confirme preço e disponibilidade antes de comprar.
           </p>
-          <button className="botao principal largura" onClick={aoAvancar}>
-            Continuar compra →
+          <button className="botao principal largura" disabled={itens.some(i => Number(i.produto.preco_centavos) <= 0 || Number(i.produto.estoque) < i.quantidade)} onClick={aoAvancar}>
+            {itens.some(i => Number(i.produto.preco_centavos) <= 0) ? "Aguardando preço e disponibilidade" : "Continuar compra →"}
           </button>
         </>
       )}
     </>
   );
 }
+
+
