@@ -1,14 +1,14 @@
 <?php
+require_once __DIR__ . "/Dinheiro.php";
 class Pedido
 {
     private $conexao;
     private $produtos;
 
-    public function __construct()
+    public function __construct(?PDO $conexao = null)
     {
-        $this->conexao = Conexao::conectar();
-        $this->produtos = new Produto();
-        $this->produtos->usarConexao($this->conexao);
+        $this->conexao = $conexao ?? Conexao::conectar();
+        $this->produtos = new Produto($this->conexao);
     }
 
     public function criar(array $dados): array
@@ -34,7 +34,7 @@ class Pedido
         }
         $identificadores = [];
         $itensValidados = [];
-        $total = 0;
+        $total = "0";
         foreach ($itens as $item) {
             if (
                 !is_array($item) ||
@@ -54,10 +54,13 @@ class Pedido
             }
             $identificadores[$item["produto_id"]] = true;
             $produto = $this->produtos->buscar($item["produto_id"]);
+            if (Dinheiro::normalizar($produto["preco_centavos"]) === "0") {
+                throw new ErroHttp("Preço sob consulta para " . $produto["nome"] . ".", 409);
+            }
             if ($produto["estoque"] < $item["quantidade"]) {
                 throw new ErroHttp("Estoque insuficiente para " . $produto["nome"] . ".", 409);
             }
-            $total += $produto["preco_centavos"] * $item["quantidade"];
+            $total = Dinheiro::somar($total, Dinheiro::multiplicar($produto["preco_centavos"], $item["quantidade"]));
             $itensValidados[] = ["produto" => $produto, "quantidade" => $item["quantidade"]];
         }
         $codigo = bin2hex(random_bytes(16));
@@ -107,11 +110,11 @@ class Pedido
         $consultaItens->execute([$pedido["id"]]);
         $pedido["itens"] = array_map(function (array $item): array {
             $item["produto_id"] = (int) $item["produto_id"];
-            $item["preco_centavos"] = (int) $item["preco_centavos"];
+            $item["preco_centavos"] = Dinheiro::normalizar($item["preco_centavos"]);
             $item["quantidade"] = (int) $item["quantidade"];
             return $item;
         }, $consultaItens->fetchAll());
-        $pedido["total_centavos"] = (int) $pedido["total_centavos"];
+        $pedido["total_centavos"] = Dinheiro::normalizar($pedido["total_centavos"]);
         unset($pedido["id"]);
         return $pedido;
     }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import CartaoProduto from "./CartaoProduto.jsx";
+import { filtrarVeiculos } from "../servicos/filtroVeiculos.js";
 import DesenhoProduto from "./DesenhoProduto.jsx";
 export default function Vitrine({
   produtos,
@@ -12,13 +13,7 @@ export default function Vitrine({
   const [busca, definirBusca] = useState("");
   const [somenteAntigos, definirSomenteAntigos] = useState(false);
 
-  const visiveis = produtos.filter(
-    (produto) =>
-      (!somenteAntigos || produto.categoria === "Carros antigos") &&
-      produto.nome
-        .toLocaleLowerCase("pt-BR")
-        .includes(busca.toLocaleLowerCase("pt-BR")),
-  );
+  const visiveis = filtrarVeiculos(produtos, busca, somenteAntigos);
   return (
     <>
       <section className="abertura">
@@ -93,7 +88,7 @@ export default function Vitrine({
             <input
               value={busca}
               onChange={(evento) => definirBusca(evento.target.value)}
-              placeholder="O que você procura?"
+              placeholder="Marca, modelo ou ano"
               type="search"
             />
           </label>
@@ -129,7 +124,3 @@ export default function Vitrine({
     </>
   );
 }
-
-
-
-

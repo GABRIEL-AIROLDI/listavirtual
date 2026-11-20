@@ -1,0 +1,13 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Estrutura baseada no README KICKS REST API para XAMPP consultado nesta revisão: scripts de endpoints na pasta api, classes por entidade e conexão compartilhada por uma classe base. Implementação própria, com nomes em português. Sem framework, Composer, Docker, .env, roteador central ou .htaccess.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

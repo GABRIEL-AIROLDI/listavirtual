@@ -1,13 +1,11 @@
+import { centavosExatos, multiplicarCentavos } from "./dinheiro.js";
+export { formatarMoeda, multiplicarCentavos } from "./dinheiro.js";
 export const limiteSacola = (produto) => ["dolphin","sandero","corolla","hilux","haval","song","fusca","mustang"].includes(produto.desenho) ? 1 : Number(produto.estoque);
-export const formatarMoeda = (centavos) =>
-  new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(
-    centavos / 100,
-  );
 export const calcularTotal = (itens) =>
-  itens.reduce(// Calcula em centavos inteiros para evitar arredondamento monetário.
-    (total, item) => total + item.produto.preco_centavos * item.quantidade,
-    0,
-  );
+  itens.reduce(
+    (total, item) => total + centavosExatos(multiplicarCentavos(item.produto.preco_centavos, item.quantidade)),
+    0n,
+  ).toString();
 export function adicionarItem(itens, produto) {
   const atual = itens.find((item) => item.produto.id === produto.id);
   if ((atual?.quantidade ?? 0) >= limiteSacola(produto))
@@ -32,6 +30,3 @@ export function alterarQuantidade(itens, identificador, quantidade) {
     return { ...item, quantidade };
   });
 }
-
-
-

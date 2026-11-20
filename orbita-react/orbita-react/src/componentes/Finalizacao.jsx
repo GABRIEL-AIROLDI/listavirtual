@@ -4,7 +4,7 @@ import {
   simularPagamento,
   consultarPedido,
 } from "../servicos/api.js";
-import { formatarMoeda, calcularTotal } from "../servicos/carrinho.js";
+import { formatarMoeda, calcularTotal, multiplicarCentavos } from "../servicos/carrinho.js";
 export default function Finalizacao({ itens, aoConcluir, aoVoltar, aoFechar }) {
   const [nome, definirNome] = useState("");
   const [email, definirEmail] = useState("");
@@ -143,8 +143,8 @@ export default function Finalizacao({ itens, aoConcluir, aoVoltar, aoFechar }) {
             {pedido.itens.map((item) => (
               <li key={item.produto_id}>
                 {item.quantidade} × {item.nome}
-                <strong>// Calcula em centavos inteiros para evitar arredondamento monetário.
-                  {formatarMoeda(item.preco_centavos * item.quantidade)}
+                <strong>
+                  {formatarMoeda(multiplicarCentavos(item.preco_centavos, item.quantidade))}
                 </strong>
               </li>
             ))}
